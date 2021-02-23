@@ -14,10 +14,11 @@ logger = logging.getLogger(__name__)
 streamHandler = logging.StreamHandler()
 fileHandler = logging.FileHandler('./server.log')
 
-# Set handler at logger instance
+# Set handler at logger instance.
 logger.addHandler(streamHandler)
 logger.addHandler(fileHandler)
 
+# Set IP & Port.
 tello_address = ('192.168.10.1', 8889)   # Tello
 local_address = ('0.0.0.0', 8890) # State
 
@@ -26,7 +27,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(local_address)
 
 # Function
-# Func 1) Send Messages to Tello
+# Func 1) Send Messages to Tello.
 def send(message):
     try:
         sock.sendto(message.encode(), tello_address)
@@ -34,7 +35,7 @@ def send(message):
     except Exception as e:
         print("Error sending: " + str(e))
 
-# Func 2) Receive Messages from Tello
+# Func 2) Receive Messages from Tello.
 def receive():
     try:
         response, ip_address = sock.recvfrom(1024) # 1024 byte
