@@ -35,28 +35,17 @@ def receive():
 
 # Main
 if __name__== '__main__':
-    while True:
-        cmd = input("Enter command : ")
-        sec = int(input("Enter second : "))
-
-        send(cmd)
-        receive()
-        time.sleep(sec)
-
-        if cmd == "land" : break
-    sock.close()
-
-    '''
     # 아래처럼 list로 명령어를 입력할 수 있음
-    cmd = ['command', 'takeoff', 'forward 50', 'flip r', 'land']
-    sec = [2, 2, 5, 3, 2]
-    
+    cmd = ['command', 'speed?', 'forward 50', 'flip r', 'battery?', 'sn?', 'land']
+    sec = [2, 2, 5, 2, 2, 3, 2]
+
     count = len(cmd)
-    for i in range(count):
-        send(cmd[i])
-        receive()
-        time.sleep(sec[i])
-    
+
+    for i in range(count):  # 0~4까지 범위
+        send(cmd[i])  # Tello Drone에게 명령어 전달
+        receive()  # Tello Drone으로부터 응답 받기
+        time.sleep(sec[i])  # 지정된 시간 일시 정지
+
     sock.close()
-    '''
+
 
