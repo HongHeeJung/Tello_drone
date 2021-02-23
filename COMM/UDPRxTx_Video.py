@@ -1,11 +1,11 @@
 # ---------------------------------------
-# Send & Receive commands to/from Tello
+# Video streaming
 # ---------------------------------------
 
 # Import Module.
 import socket
 import time
-import cv2          # Video에서 수신된 데이터 처리 모듈
+import cv2          # Module to process data from Video
 
 # Set IP & Port
 tello_address = ('192.168.10.1', 8889)      # Tello
@@ -38,18 +38,35 @@ def receive():
 
 # Main
 if __name__== '__main__':
-    # (1) Tello에게 sdk mode 시작 요청 command 전송
+    # (1) Send command to Tello to start SDK mode.
     send('command')
     receive()
     time.sleep(2)
 
-    # 카메라로부터 수신된 영상 데이터 화면 출력
+    # (2) Stream on.
+    send('streamon')
+    time.sleep(2)
+
+    # (3) Show frame data from Camera.
     cap = cv2.VideoCapture(video_address, cv2.CAP_FFMPEG)
     while(cap.isOpened()):
         ret, frame = cap.read()
         if ret:
-            cv2.imshow('FROM Tello CAM'. frame)
+            cv2.imshow('FROM Tello CAM', frame)
+            key = cv2.waitKey(1)
+            if key == ord('q'):
+                cv2.imwrite('capture_02.jpg', frame)
+                break
+        else:
+            print('No CAM !!')
+            break
 
+    # (4) Release Camera.
+    cap.release()
+    cv2.destroyWindow()
+    send("streamoff")           # Turn off Video
+
+    # (5)Close a socket.
     sock.close()
 
 
